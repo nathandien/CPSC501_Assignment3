@@ -54,10 +54,10 @@ public class ObjectCreator {
 			obj = makeArrObj();
 		}
 		else if(option == 4) {
-
+			System.out.println("\nCreating object with array of references:\n____________________________");
 		}
 		else if(option == 5) {
-			
+			System.out.println("\nCreating object with collection classes:\n____________________________");
 		}
 
 		// Serialize object
@@ -222,7 +222,7 @@ public class ObjectCreator {
 
 				// Sets of value of integer array
 				for(int count = 0; count < intLength; count++) {
-					System.out.println("Enter the value of array " + count);
+					System.out.println("Enter the value of integer " + count);
 					input = scanner.nextLine();
 					integerArr[count] = Integer.parseInt(input);
 				}
@@ -283,5 +283,10 @@ public class ObjectCreator {
 		
 		return arrObj;
 	}
-
+	
+	public static Object makeArrRefObj() {
+		
+		ArrayRefObject obj = new ArrayRefObject();
+		return obj;
+	}
 }

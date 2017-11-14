@@ -14,8 +14,8 @@ public class RefObject {
 		this.obj2 = obj2;
 	}
 	
-	SimpleObject obj;
-	SimpleObject obj2;
+	private SimpleObject obj;
+	private SimpleObject obj2;
 	
 	
 	
