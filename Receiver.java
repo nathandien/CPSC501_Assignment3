@@ -9,7 +9,7 @@ import org.jdom2.input.SAXBuilder;
 
 public class Receiver {
 
-	public static void main(String[] args) throws JDOMException, IOException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public static void main(String[] args) throws Exception {
 
 		if(args.length != 1) {
 			System.out.println("Incorrect number of arguments: Receiver <port>");
@@ -48,9 +48,10 @@ public class Receiver {
 		Document document = (Document) builder.build(xmlFile);
 		
 		Deserializer deserializer = new Deserializer();
-		RefObject a = (RefObject) deserializer.deserialize(document);
+		Object obj = deserializer.deserialize(document);
 
-		System.out.println(a.getObj().isBoolVal());
+		Inspector inspector = new Inspector(obj);
+		inspector.inspect(obj, true);
 
 	}
 
