@@ -1,5 +1,6 @@
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.util.Scanner;
 
 import org.jdom2.Document;
@@ -13,9 +14,14 @@ public class Sender {
 
 		Scanner scanner = new Scanner(System.in);
 
+		if(args.length != 2) {
+			System.out.println("Incorrect number of arguments: Sender <hostname> <port>");
+			System.exit(1);
+		}
 
-
-
+		String hostname = args[0];
+		int port = Integer.parseInt(args[1]);
+		
 		String input;
 		int option;
 		Object obj = null;
@@ -24,16 +30,9 @@ public class Sender {
 
 		Serializer serializer = new Serializer();
 
-		Object a = new Integer(12);
-		Class b = Class.forName("java.lang.Integer");
-		Object c = null;
-		b.cast(c);
-		int d = Integer.parseInt(a.toString());
-		System.out.println(d);
-		
-		
+
 		while(true) {
-			
+
 			System.out.println("Object Creator\n____________________________");
 			System.out.println("Select an object to create:");
 			System.out.println("(1) Simple Object");
@@ -89,8 +88,30 @@ public class Sender {
 		XMLOutputter xmlOutput = new XMLOutputter();
 
 		xmlOutput.setFormat(Format.getPrettyFormat());
-		System.out.println(document);
 		xmlOutput.output(document, new FileWriter("XML.xml"));
 
+		// Initializes socket
+		Socket socket = new Socket(hostname, port);
+		// Creates new file XML.xml to send to server
+		File xmlFile = new File("XML.xml");
+		
+		// Initializes buffer for reading in XML data
+		byte[] buffer = new byte[8192];
+		
+		// Initializes streams for reading and writing
+		InputStream inStream = new FileInputStream(xmlFile);
+        OutputStream outStream = socket.getOutputStream();
+        
+        int count;
+        // Reads file and sends data to server
+        while ((count = inStream.read(buffer)) > 0) {
+        	outStream.write(buffer, 0, count);
+        }
+        
+        // Closes streams and socket
+        inStream.close();
+        outStream.close();
+        socket.close();
+		
 	}
 }
