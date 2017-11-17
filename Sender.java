@@ -9,7 +9,7 @@ import org.jdom2.output.XMLOutputter;
 public class Sender {
 
 
-	public static void main(String[] args) throws IllegalArgumentException, IllegalAccessException, IOException {
+	public static void main(String[] args) throws IllegalArgumentException, IllegalAccessException, IOException, ClassNotFoundException, InstantiationException {
 
 		Scanner scanner = new Scanner(System.in);
 
@@ -24,6 +24,14 @@ public class Sender {
 
 		Serializer serializer = new Serializer();
 
+		Object a = new Integer(12);
+		Class b = Class.forName("java.lang.Integer");
+		Object c = null;
+		b.cast(c);
+		int d = Integer.parseInt(a.toString());
+		System.out.println(d);
+		
+		
 		while(true) {
 			
 			System.out.println("Object Creator\n____________________________");
@@ -81,6 +89,7 @@ public class Sender {
 		XMLOutputter xmlOutput = new XMLOutputter();
 
 		xmlOutput.setFormat(Format.getPrettyFormat());
+		System.out.println(document);
 		xmlOutput.output(document, new FileWriter("XML.xml"));
 
 	}

@@ -3,74 +3,17 @@ import java.util.Scanner;
 
 public class ObjectCreator {
 
-	public static Scanner scanner = new Scanner(System.in);
+	public static Scanner scanner;
 
-	public static void main(String[] args) throws IllegalArgumentException, IllegalAccessException, IOException {
-
-
-
-		System.out.println("Object Creator\n____________________________");
-		System.out.println("Select an object to create:");
-		System.out.println("(1) Simple Object");
-		System.out.println("(2) Object with references to other objects");
-		System.out.println("(3) Object with array of primitives");
-		System.out.println("(4) Object with array of references");
-		System.out.println("(5) Object using instance collection");
-		
-
-		String input;
-		int option;
-
-		while(true) {
-
-			try {
-				input = scanner.nextLine();
-				option = Integer.parseInt(input);
-
-				if(option < 1 || option > 5) 
-					System.out.println("Invalid Option, must be a number from 1-5");
-				else 
-					break;
-
-			}
-			catch(NumberFormatException nfe) {
-				System.out.println("Invalid option, not a number!");
-			}
-
-		}
-
-		Object obj = null;
-
-		if(option == 1) {
-			System.out.println("\nCreating simple object:\n____________________________");
-			obj = makeSimpObj();
-		}
-		else if(option == 2) {
-			System.out.println("\nCreating object with references:\n____________________________");
-			obj = makeRefObj(); 
-		}
-		else if(option == 3) {
-			System.out.println("\nCreating object with array of primitves:\n____________________________");
-			obj = makeArrObj();
-		}
-		else if(option == 4) {
-			System.out.println("\nCreating object with array of references:\n____________________________");
-		}
-		else if(option == 5) {
-			System.out.println("\nCreating object with collection classes:\n____________________________");
-		}
-
-		// Serialize object
-		Serializer serializer = new Serializer();
-		serializer.serialize(obj);
-		
+	public ObjectCreator() {
+		this.scanner = new Scanner(System.in);
 	}
 
 	/**
 	 * Creates a simple object with values set by user input
 	 * @return	Simple object
 	 */
-	public static Object makeSimpObj() {
+	public Object makeSimpObj() {
 
 		String input;
 		SimpleObject obj = new SimpleObject();
@@ -118,7 +61,7 @@ public class ObjectCreator {
 	 * Creates a reference object with simple objects stored and set by user input
 	 * @return Reference Object
 	 */
-	public static Object makeRefObj() {
+	public Object makeRefObj() {
 
 		String input;
 		RefObject refObj = new RefObject();
@@ -159,7 +102,7 @@ public class ObjectCreator {
 			else
 				System.out.println("Invalid value, must be 'true' or 'false'");
 		}
-		
+
 		// Sets value of integer and double for obj2
 		while(true) {
 			try {
@@ -170,7 +113,7 @@ public class ObjectCreator {
 				System.out.print("Enter double value to be stored in object 2");
 				input = scanner.nextLine();
 				obj2.setDoubleNum(Double.parseDouble(input));
-				
+
 				break;
 			}
 			catch(NumberFormatException nfe) {
@@ -202,7 +145,7 @@ public class ObjectCreator {
 		return refObj;
 	}
 
-	public static Object makeArrObj() {
+	public Object makeArrObj() {
 
 		ArrayObject arrObj = new ArrayObject();
 		String input;
@@ -280,13 +223,79 @@ public class ObjectCreator {
 			}
 		}
 		arrObj.setBoolArr(boolArr);
-		
+
 		return arrObj;
 	}
-	
-	public static Object makeArrRefObj() {
-		
+
+	public Object makeArrRefObj() {
+
 		ArrayRefObject obj = new ArrayRefObject();
+		String input;
+		SimpleObject[] simpObj = null;
+		int length = 0;
+
+		while(true) {
+
+			// Gets number of SimpleObjects
+			try {
+				System.out.println("Enter the number of SimpleObjects");
+				input = scanner.nextLine();
+				length = Integer.parseInt(input);
+				simpObj = new SimpleObject[length];
+				
+				// Initialize all SimpleObjects
+				for(int count = 0; count < length; count++)
+					simpObj[count] = new SimpleObject();
+				
+				break;
+			}
+			catch(NumberFormatException nfe) {
+				System.out.println("Invalid value, not a number");
+			}
+		}
+
+		int count = 0;
+		while(true) {
+			if(count >= length)
+				break;
+			else {
+				try {
+
+					// Sets value of integer and double for SimpleObject count
+					System.out.println("Enter value of integer for SimpleObject " + count);
+					input = scanner.nextLine();
+					simpObj[count].setIntegerNum(Integer.parseInt(input));
+
+					System.out.print("Enter value of double for SimpleObject " + count);
+					input = scanner.nextLine();
+					simpObj[count].setDoubleNum(Double.parseDouble(input));
+
+					// Sets value of boolean
+					while(true) {
+						System.out.print("Enter boolean value (true/false) for SimpleObject " + count);
+						input = scanner.nextLine();
+
+						if(input.equalsIgnoreCase("true")) {
+							simpObj[count].setBoolVal(true);
+							break;
+						}
+						else if(input.equalsIgnoreCase("false")) {
+							simpObj[count].setBoolVal(false);
+							break;
+						}
+						else
+							System.out.println("Invalid balue, must be 'true' or 'false'");
+					}
+
+					count++;
+				}
+				catch(NumberFormatException nfe) {
+					System.out.println("Invalid value, not a number");
+				}
+			}
+		}
+		obj.setObj(simpObj);
+
 		return obj;
 	}
 }
